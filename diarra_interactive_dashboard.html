@@ -1,0 +1,272 @@
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; }
+.dash { padding: 1rem 0 2rem; }
+.tabs { display: flex; gap: 6px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+button { cursor: pointer; font-size: 13px; padding: 7px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); transition: all .15s; }
+button:hover { background: var(--color-background-secondary); }
+button.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 500; border-color: var(--color-border-primary); }
+.section { display: none; }
+.section.visible { display: block; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.kpi { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 14px; }
+.kpi-label { font-size: 11px; color: var(--color-text-secondary); margin: 0 0 4px; }
+.kpi-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0; line-height: 1.1; }
+.kpi-sub { font-size: 11px; color: var(--color-text-secondary); margin: 3px 0 0; }
+.kpi-up { color: #27500A; }
+.kpi-dn { color: #791F1F; }
+.kpi-vik { color: #0C447C; }
+.chart-wrap { position: relative; width: 100%; }
+.h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 1.5rem 0 0.5rem; }
+.legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; font-size: 12px; color: var(--color-text-secondary); }
+.leg { display: flex; align-items: center; gap: 5px; }
+.leg-dot { width: 10px; height: 7px; border-radius: 2px; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+.radar-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.insight { background: var(--color-background-secondary); border-left: 3px solid #185FA5; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 10px 14px; font-size: 13px; color: var(--color-text-primary); line-height: 1.6; margin-bottom: 10px; }
+.insight.warn { border-left-color: #BA7517; }
+.insight.good { border-left-color: #3B6D11; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+.proj-box { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px; }
+.proj-title { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 8px; }
+.proj-num { font-size: 28px; font-weight: 500; color: #0C447C; line-height: 1; }
+.proj-range { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+.slider-row { display: flex; align-items: center; gap: 12px; margin: 10px 0; font-size: 13px; color: var(--color-text-secondary); }
+.slider-row input { flex: 1; }
+.slider-val { font-weight: 500; color: var(--color-text-primary); min-width: 40px; text-align: right; }
+.bar-comp { display: flex; flex-direction: column; gap: 8px; }
+.brow { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.blabel { width: 130px; flex-shrink: 0; color: var(--color-text-secondary); }
+.btrack { flex: 1; background: var(--color-border-tertiary); border-radius: 3px; height: 6px; position: relative; }
+.bfill { height: 6px; border-radius: 3px; position: absolute; top: 0; left: 0; transition: width .4s; }
+.bval { width: 50px; text-align: right; flex-shrink: 0; color: var(--color-text-primary); }
+</style>
+
+<div class="dash">
+
+<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:1.5rem">
+  <div style="font-size:18px;font-weight:500;color:var(--color-text-primary)">Sory Diarra — spilleranalyse</div>
+  <div style="font-size:13px;color:var(--color-text-secondary)">2023–2025 + Viking-projeksjon</div>
+</div>
+
+<div class="tabs">
+  <button class="active" onclick="showTab('overview',this)">Oversikt</button>
+  <button onclick="showTab('seasons',this)">Sesonger</button>
+  <button onclick="showTab('profile',this)">Spillerprofil</button>
+  <button onclick="showTab('viking',this)">Viking-fit</button>
+</div>
+
+<div id="tab-overview" class="section visible">
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Mål totalt (3 sesonger)</div><div class="kpi-val">21</div><div class="kpi-sub">72 kamper · 5 491 min</div></div>
+    <div class="kpi"><div class="kpi-label">Beste mål/90</div><div class="kpi-val kpi-up">0.40</div><div class="kpi-sub">2023 — 9 mål på 12.plass</div></div>
+    <div class="kpi"><div class="kpi-label">xG over 3 år</div><div class="kpi-val">21.11</div><div class="kpi-sub">Scoret akkurat på xG</div></div>
+    <div class="kpi"><div class="kpi-label">Projeksjon Viking</div><div class="kpi-val kpi-vik">14–16</div><div class="kpi-sub">mål per sesong estimert</div></div>
+  </div>
+  <div class="h3">Mål og xG per sesong</div>
+  <div class="legend-row">
+    <span class="leg"><span class="leg-dot" style="background:#3B6D11"></span>Mål scoret</span>
+    <span class="leg"><span class="leg-dot" style="background:#B4B2A9"></span>xG (forventet mål)</span>
+  </div>
+  <div class="chart-wrap" style="height:220px"><canvas id="c-overview"></canvas></div>
+  <hr class="divider">
+  <div class="h3">Lagets xG for — kontekst</div>
+  <div class="legend-row">
+    <span class="leg"><span class="leg-dot" style="background:#E24B4A"></span>FKH snitt xG/kamp</span>
+    <span class="leg"><span class="leg-dot" style="background:#378ADD"></span>Viking 2025</span>
+  </div>
+  <div class="chart-wrap" style="height:160px"><canvas id="c-context"></canvas></div>
+</div>
+
+<div id="tab-seasons" class="section">
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">2023 · 12. plass</div><div class="kpi-val kpi-up">9 mål</div><div class="kpi-sub">xG: 7.91 · +1.09 over</div></div>
+    <div class="kpi"><div class="kpi-label">2024 · 14. plass</div><div class="kpi-val kpi-dn">5 mål</div><div class="kpi-sub">xG: 7.27 · –2.27 under</div></div>
+    <div class="kpi"><div class="kpi-label">2025 · Nedrykk</div><div class="kpi-val">7 mål</div><div class="kpi-sub">xG: 5.93 · +1.07 over</div></div>
+    <div class="kpi"><div class="kpi-label">Trend</div><div class="kpi-val" style="font-size:16px;color:var(--color-text-secondary)">±xG</div><div class="kpi-sub">Over → Under → Over</div></div>
+  </div>
+  <div class="h3">Nøkkeltall per 90 min — alle sesonger</div>
+  <div class="legend-row">
+    <span class="leg"><span class="leg-dot" style="background:#3B6D11"></span>2023</span>
+    <span class="leg"><span class="leg-dot" style="background:#BA7517"></span>2024</span>
+    <span class="leg"><span class="leg-dot" style="background:#378ADD"></span>2025</span>
+  </div>
+  <div class="chart-wrap" style="height:280px"><canvas id="c-seasons"></canvas></div>
+  <hr class="divider">
+  <div class="h3">xG-differanse per sesong (over/under forventet)</div>
+  <div class="chart-wrap" style="height:160px"><canvas id="c-xgdiff"></canvas></div>
+</div>
+
+<div id="tab-profile" class="section">
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Skudd på mål %</div><div class="kpi-val">52%</div><div class="kpi-sub">Best i 2023: 58%</div></div>
+    <div class="kpi"><div class="kpi-label">Luftdueller vunnet</div><div class="kpi-val">~40%</div><div class="kpi-sub">Konsistent alle sesonger</div></div>
+    <div class="kpi"><div class="kpi-label">Assists (3 sesonger)</div><div class="kpi-val kpi-dn">1</div><div class="kpi-sub">Kun én på 72 kamper</div></div>
+    <div class="kpi"><div class="kpi-label">Gule kort 2025</div><div class="kpi-val kpi-up">1</div><div class="kpi-sub">Ned fra 6 i 2024</div></div>
+  </div>
+  <div class="h3">Offensiv aktivitet per 90 — trend over år</div>
+  <div class="legend-row">
+    <span class="leg"><span class="leg-dot" style="background:#3B6D11"></span>2023</span>
+    <span class="leg"><span class="leg-dot" style="background:#BA7517"></span>2024</span>
+    <span class="leg"><span class="leg-dot" style="background:#378ADD"></span>2025</span>
+  </div>
+  <div class="bar-comp" style="margin-bottom:1.5rem">
+    <div class="brow"><div class="blabel">Driblinger/90</div><div class="btrack"><div class="bfill" style="width:52%;background:#3B6D11"></div></div><div class="bval">1.58</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:50%;background:#BA7517"></div></div><div class="bval">1.51</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:18%;background:#378ADD"></div></div><div class="bval">0.55</div></div>
+    <div class="brow" style="margin-top:8px"><div class="blabel">Touch i felt/90</div><div class="btrack"><div class="bfill" style="width:68%;background:#3B6D11"></div></div><div class="bval">3.4</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:64%;background:#BA7517"></div></div><div class="bval">3.2</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:42%;background:#378ADD"></div></div><div class="bval">2.1</div></div>
+    <div class="brow" style="margin-top:8px"><div class="blabel">Skudd på mål %</div><div class="btrack"><div class="bfill" style="width:58%;background:#3B6D11"></div></div><div class="bval">58%</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:43%;background:#BA7517"></div></div><div class="bval">43%</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:52%;background:#378ADD"></div></div><div class="bval">52%</div></div>
+    <div class="brow" style="margin-top:8px"><div class="blabel">Konv.rate</div><div class="btrack"><div class="bfill" style="width:74%;background:#3B6D11"></div></div><div class="bval">37%</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:36%;background:#BA7517"></div></div><div class="bval">18%</div></div>
+    <div class="brow"><div class="blabel"></div><div class="btrack"><div class="bfill" style="width:48%;background:#378ADD"></div></div><div class="bval">24%</div></div>
+  </div>
+  <hr class="divider">
+  <div class="h3">Radar — spillerprofil 2023 vs 2025</div>
+  <div class="chart-wrap" style="height:300px"><canvas id="c-radar"></canvas></div>
+</div>
+
+<div id="tab-viking" class="section">
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Vikings xG/kamp</div><div class="kpi-val kpi-vik">1.92</div><div class="kpi-sub">vs FKH: 0.77</div></div>
+    <div class="kpi"><div class="kpi-label">Oppskaleringsfaktor</div><div class="kpi-val kpi-vik">×2.49</div><div class="kpi-sub">mer offensivt miljø</div></div>
+    <div class="kpi"><div class="kpi-label">Sentralt estimat</div><div class="kpi-val kpi-vik">14–16</div><div class="kpi-sub">mål per sesong</div></div>
+    <div class="kpi"><div class="kpi-label">Kontraktsstatus</div><div class="kpi-val" style="font-size:15px">Gratis</div><div class="kpi-sub">utløper des. 2026</div></div>
+  </div>
+
+  <div class="h3">Juster projeksjon</div>
+  <div class="slider-row"><span style="min-width:160px">Kamper fra start</span><input type="range" min="20" max="30" value="26" step="1" id="sl-games" oninput="calcProj()"><span class="slider-val" id="out-games">26</span></div>
+  <div class="slider-row"><span style="min-width:160px">Konverteringsrate</span><input type="range" min="15" max="40" value="24" step="1" id="sl-conv" oninput="calcProj()"><span class="slider-val" id="out-conv">24%</span></div>
+  <div class="slider-row"><span style="min-width:160px">xG-andel av laget</span><input type="range" min="10" max="30" value="19" step="1" id="sl-share" oninput="calcProj()"><span class="slider-val" id="out-share">19%</span></div>
+
+  <div class="row2" style="margin-top:1rem">
+    <div class="proj-box">
+      <div class="proj-title">Projiserte mål</div>
+      <div class="proj-num" id="proj-goals">15</div>
+      <div class="proj-range" id="proj-range">interval: 12–18</div>
+    </div>
+    <div class="proj-box">
+      <div class="proj-title">Projisert xG</div>
+      <div class="proj-num" id="proj-xg">14.8</div>
+      <div class="proj-range">basert på Vikings 1.92 xG/kamp</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="h3">Offensivt miljø — FKH vs Viking 2025</div>
+  <div class="legend-row">
+    <span class="leg"><span class="leg-dot" style="background:#E24B4A"></span>FKH 2025 (nedrykk)</span>
+    <span class="leg"><span class="leg-dot" style="background:#185FA5"></span>Viking 2025 (seriemester)</span>
+  </div>
+  <div class="chart-wrap" style="height:260px"><canvas id="c-viking"></canvas></div>
+  <hr class="divider">
+  <div class="insight good">Viking skapte 2.5× mer enn FKH per kamp. Med Diarras konverteringsevne fra 2023 er 18+ mål ikke urealistisk i dette systemet.</div>
+  <div class="insight warn">Viking spiller pressingfotball. Diarras arbeidsrate er middels — men han trenger ikke være en pressingleder for å score 15 mål.</div>
+  <div class="insight">Kontrakten utløper desember 2026. Lav risiko, høy potensiell oppside. Nær null overgangssum.</div>
+  <button style="margin-top:8px" onclick="sendPrompt('Hvilke andre ES-klubber passer Diarra bedre enn Viking?')">Hvem passer ellers? ↗</button>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('visible');
+  btn.classList.add('active');
+}
+
+const C23 = '#3B6D11', C24 = '#BA7517', C25 = '#378ADD', CGRAY = '#B4B2A9', CVIK = '#185FA5', CRED = '#E24B4A';
+const baseOpts = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
+
+new Chart(document.getElementById('c-overview'), {
+  type: 'bar',
+  data: {
+    labels: ['2023 (12.pl)', '2024 (14.pl)', '2025 (nedrykk)'],
+    datasets: [
+      { label: 'Mål', data: [9, 5, 7], backgroundColor: [C23, C24, C25] },
+      { label: 'xG', data: [7.91, 7.27, 5.93], backgroundColor: CGRAY, type: 'line', borderColor: CGRAY, pointRadius: 5, tension: 0.3, borderWidth: 2, fill: false }
+    ]
+  },
+  options: { ...baseOpts, scales: { y: { beginAtZero: true, max: 12 } } }
+});
+
+new Chart(document.getElementById('c-context'), {
+  type: 'bar',
+  data: {
+    labels: ['FKH 2023', 'FKH 2024', 'FKH 2025', 'Viking 2025'],
+    datasets: [{ data: [0.92, 0.85, 0.77, 1.92], backgroundColor: [CGRAY, CGRAY, CRED, CVIK] }]
+  },
+  options: { ...baseOpts, scales: { y: { beginAtZero: true, max: 2.5, title: { display: true, text: 'xG for/kamp' } } } }
+});
+
+new Chart(document.getElementById('c-seasons'), {
+  type: 'bar',
+  data: {
+    labels: ['Mål/90', 'Skudd/90', 'Dribl/90', 'Touch i felt/90', 'Konv.% ÷10'],
+    datasets: [
+      { label: '2023', data: [0.40, 1.59, 1.58, 3.4, 3.7], backgroundColor: C23 },
+      { label: '2024', data: [0.25, 1.57, 1.51, 3.2, 1.8], backgroundColor: C24 },
+      { label: '2025', data: [0.38, 1.59, 0.55, 2.1, 2.4], backgroundColor: C25 }
+    ]
+  },
+  options: { ...baseOpts, scales: { x: { ticks: { autoSkip: false } }, y: { beginAtZero: true } } }
+});
+
+new Chart(document.getElementById('c-xgdiff'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025'],
+    datasets: [{ data: [1.09, -2.27, 1.07], backgroundColor: [C23, CRED, C25] }]
+  },
+  options: { ...baseOpts, scales: { y: { title: { display: true, text: 'Mål minus xG' } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => (c.parsed.y > 0 ? '+' : '') + c.parsed.y.toFixed(2) + ' mål' } } } }
+});
+
+new Chart(document.getElementById('c-radar'), {
+  type: 'radar',
+  data: {
+    labels: ['Mål/90', 'Skudd på mål', 'Driblinger', 'Touch i felt', 'Konv.rate', 'Luftdueller'],
+    datasets: [
+      { label: '2023', data: [0.40/0.5*10, 5.8, 1.58/2*10, 3.4/4*10, 3.7, 4.3], borderColor: C23, backgroundColor: C23+'33', pointBackgroundColor: C23 },
+      { label: '2025', data: [0.38/0.5*10, 5.2, 0.55/2*10, 2.1/4*10, 2.4, 4.0], borderColor: C25, backgroundColor: C25+'33', pointBackgroundColor: C25 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { min: 0, max: 10, ticks: { display: false }, grid: { color: '#88888830' } } } }
+});
+
+new Chart(document.getElementById('c-viking'), {
+  type: 'bar',
+  data: {
+    labels: ['xG/kamp', 'Skudd/kamp ÷2', 'Mål/kamp', 'Angrep m/skudd ÷5'],
+    datasets: [
+      { label: 'FKH 2025', data: [0.77, 8.3/2, 0.57, 10/5], backgroundColor: CRED },
+      { label: 'Viking 2025', data: [1.92, 15.4/2, 2.53, 31/5], backgroundColor: CVIK }
+    ]
+  },
+  options: { ...baseOpts, scales: { x: { ticks: { autoSkip: false } }, y: { beginAtZero: true } } }
+});
+
+function calcProj() {
+  const games = +document.getElementById('sl-games').value;
+  const conv = +document.getElementById('sl-conv').value / 100;
+  const share = +document.getElementById('sl-share').value / 100;
+  document.getElementById('out-games').textContent = games;
+  document.getElementById('out-conv').textContent = document.getElementById('sl-conv').value + '%';
+  document.getElementById('out-share').textContent = document.getElementById('sl-share').value + '%';
+  const vikXGperGame = 1.92;
+  const myXGperGame = vikXGperGame * share / 0.19 * 0.19;
+  const totalXG = +(vikXGperGame * share * games).toFixed(1);
+  const goals = Math.round(totalXG * (conv / 0.24));
+  const lo = Math.round(goals * 0.8);
+  const hi = Math.round(goals * 1.2);
+  document.getElementById('proj-goals').textContent = goals;
+  document.getElementById('proj-range').textContent = 'interval: ' + lo + '–' + hi;
+  document.getElementById('proj-xg').textContent = totalXG;
+}
+calcProj();
+</script>
